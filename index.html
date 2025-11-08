@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Office Escape - ESL Game</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+
+    <script>
+        const scenes = [
+            {
+                id: 0,
+                title: "The Locked Office",
+                description: "You wake up in your office after falling asleep during overtime. The door is locked! Your boss left a note: 'Complete all tasks correctly to get the exit code.' You notice several stations around the room.",
+                image: "🏢",
+                tasks: [
+                    {
+                        type: "choice",
+                        question: "Your colleague messages you: 'OMG THE DEADLINE IS TODAY AND WE'RE NOT READY!!!' What's the best response?",
+                        options: [
+                            "PANIC! WE'RE DOOMED!",
+                            "Hey, take a chill pill! We still have 6 hours.",
+                            "You always ruin team morale with your negativity!",
+                            "Let me raise this issue with the boss immediately."
+                        ],
+                        correct: 1,
+                        explanation: "'Take a chill pill' means to relax and not overreact - perfect for calming someone down!",
+                        reward: "calming-tea"
+                    },
+                    {
+                        type: "choice",
+                        question: "You find a document titled 'Company Policies and Employee ___________'. What word fits?",
+                        options: [
+                            "Topics",
+                            "Themes",
+                            "Borders",
+                            "Boundaries"
+                        ],
+                        correct: 3,
+                        explanation: "'Boundaries' refers to limits and personal/professional space. 'Topics' are just subjects of discussion.",
+                        reward: "policy-manual"
+                    }
+                ]
+            },
+            {
+                id: 1,
+                title: "The Conference Room",
+                description: "You enter the conference room. There's a presentation on the screen about company values and a video playing with no sound.",
+                image: "👔",
+                tasks: [
+                    {
+                        type: "choice",
+                        question: "The video has no sound, but you need to understand what the CEO is saying. What should you do?",
+                        options: [
+                            "Try to lip-read what she's saying",
+                            "Try to embrace what she's saying",
+                            "Try to spell what she's saying",
+                            "Try to pronounce what she's saying"
+                        ],
+                        correct: 0,
+                        explanation: "'Lip-read' means to understand speech by watching someone's mouth movements.",
+                        reward: "ceo-message"
+                    },
+                    {
+                        type: "fill",
+                        question: "Complete the CEO's message: 'Our company _______ new challenges every day.' (use: embrace/hug)",
+                        answer: "embraces",
+                        alternatives: ["embrace"],
+                        explanation: "'Embrace' can mean to accept or welcome ideas/changes fully. 'Hug' is only physical.",
+                        reward: "motivation-badge"
+                    },
+                    {
+                        type: "choice",
+                        question: "The presentation says: 'Let's discuss the deeper _______ of our mission: innovation and trust.' What fits?",
+                        options: [
+                            "topic",
+                            "theme",
+                            "meme",
+                            "term"
+                        ],
+                        correct: 1,
+                        explanation: "'Theme' refers to the deeper idea or main concept. 'Topic' is just the subject being discussed.",
+                        reward: "mission-card"
+                    }
+                ]
+            },
+            {
+                id: 2,
+                title: "The Break Room",
+                description: "You find yourself in the break room. There's old food in the fridge, a coffee machine, and a note about the company party.",
+                image: "☕",
+                tasks: [
+                    {
+                        type: "choice",
+                        question: "You open the fridge and see apples from last month. What happened to them?",
+                        options: [
+                            "They started to rot",
+                            "They started to rise",
+                            "They started to spell",
+                            "They started to raise"
+                        ],
+                        correct: 0,
+                        explanation: "'Rot' means to decay or go bad. Food that's too old will rot.",
+                        reward: "health-inspection"
+                    },
+                    {
+                        type: "choice",
+                        question: "A coworker's note says: 'Can you ________ your name? I can't read your handwriting!'",
+                        options: [
+                            "pronounce",
+                            "spell",
+                            "rise",
+                            "interrogate"
+                        ],
+                        correct: 1,
+                        explanation: "'Spell' means to say or write the letters of a word. 'Pronounce' is how you say it out loud.",
+                        reward: "name-tag"
+                    },
+                    {
+                        type: "fill",
+                        question: "Sign says: 'Party theme: Around the World! The event will be _________, not online!' (in-person/offline)",
+                        answer: "in-person",
+                        alternatives: ["in person"],
+                        explanation: "'In-person' means meeting face-to-face physically. 'Offline' means without internet.",
+                        reward: "party-invite"
+                    }
+                ]
+            },
+            {
+                id: 3,
+                title: "The HR Department",
+                description: "You reach HR. There are employee files everywhere and a security guard blocking the exit.",
+                image: "🔐",
+                tasks: [
+                    {
+                        type: "choice",
+                        question: "The guard asks: 'Is this new intern ________ this position? He has no experience.' What fits?",
+                        options: [
+                            "fit for",
+                            "tired of",
+                            "kicked out of",
+                            "ended up in"
+                        ],
+                        correct: 0,
+                        explanation: "'Fit for' means suitable or qualified for a task or position.",
+                        reward: "approval-stamp"
+                    },
+                    {
+                        type: "choice",
+                        question: "Employee complaint: 'The manager's constant criticism started to ________.'",
+                        options: [
+                            "raise our salaries",
+                            "ruin team morale",
+                            "make decisions",
+                            "have guests over"
+                        ],
+                        correct: 1,
+                        explanation: "'Ruin team morale' means to destroy positive feelings and motivation in a group.",
+                        reward: "complaint-form"
+                    },
+                    {
+                        type: "fill",
+                        question: "File note: 'Employee was ________ of the team for breaking safety rules three times.' (use: kick out)",
+                        answer: "kicked out",
+                        alternatives: [],
+                        explanation: "'Kicked out' means forced to leave a group or place, often as punishment.",
+                        reward: "security-pass"
+                    },
+                    {
+                        type: "choice",
+                        question: "Guard: 'The temperature is 20°C but ________. The AC is broken.' What makes sense?",
+                        options: [
+                            "it feels like it",
+                            "it doesn't feel like it",
+                            "it's brainrotting",
+                            "it's bedrotting"
+                        ],
+                        correct: 1,
+                        explanation: "'It doesn't feel like it' means the situation doesn't seem that way or match expectations.",
+                        reward: "temperature-log"
+                    }
+                ]
+            },
+            {
+                id: 4,
+                title: "The Boss's Office - Final Challenge",
+                description: "You've reached the boss's office. To get the exit code, you must complete the final vocabulary challenge!",
+                image: "🎯",
+                tasks: [
+                    {
+                        type: "choice",
+                        question: "Meeting notes: 'Prices ________ by 15% last quarter due to inflation.' (rise/raise)",
+                        options: [
+                            "rose",
+                            "raised",
+                            "rised",
+                            "raised up"
+                        ],
+                        correct: 0,
+                        explanation: "'Rose' (past of rise) - goes up by itself. 'Raised' needs an object: 'They raised prices.'",
+                        reward: "financial-report"
+                    },
+                    {
+                        type: "fill",
+                        question: "Email: 'I studied engineering but ________ working in marketing!' (use: end up)",
+                        answer: "ended up",
+                        alternatives: [],
+                        explanation: "'End up' means to finally be or do something, often unexpectedly.",
+                        reward: "career-file"
+                    },
+                    {
+                        type: "choice",
+                        question: "Boss's calendar: 'Monday: Meeting with _________' (his wife's parents)",
+                        options: [
+                            "in-laws",
+                            "out-laws",
+                            "boundaries",
+                            "guests"
+                        ],
+                        correct: 0,
+                        explanation: "'In-laws' are the family of your spouse (husband or wife).",
+                        reward: "calendar-access"
+                    },
+                    {
+                        type: "choice",
+                        question: "Note: 'After thinking all week, I finally ________ about the new project.'",
+                        options: [
+                            "got tired",
+                            "had guests over",
+                            "made a decision",
+                            "kicked someone out"
+                        ],
+                        correct: 2,
+                        explanation: "'Make a decision' means to choose what to do after thinking about it.",
+                        reward: "exit-code"
+                    }
+                ]
+            }
+        ];
+
+        let gameState = 'intro';
+        let currentScene = 0;
+        let inventory = [];
+        let score = 0;
+        let feedback = '';
+        let lives = 3;
+
+        function render() {
+            const app = document.getElementById('app');
+            
+            if (gameState === 'intro') {
+                app.innerHTML = '<div class="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 flex items-center justify-center p-4">' +
+                    '<div class="bg-white rounded-2xl shadow-2xl p-8 max-w-2xl w-full">' +
+                        '<div class="text-center">' +
+                            '<div class="text-6xl mb-4">🏢</div>' +
+                            '<h1 class="text-4xl font-bold text-gray-800 mb-4">Office Escape</h1>' +
+                            '<p class="text-lg text-gray-600 mb-6">' +
+                                'You\'re trapped in your office after working late! To escape, you must complete vocabulary tasks using your B1 English skills.' +
+                            '</p>' +
+                            '<div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 text-left">' +
+                                '<p class="font-semibold text-yellow-800 mb-2">🎮 How to Play:</p>' +
+                                '<ul class="text-sm text-yellow-700 space-y-1">' +
+                                    '<li>• Navigate through 5 different rooms</li>' +
+                                    '<li>• Answer vocabulary questions correctly</li>' +
+                                    '<li>• You have 3 lives - wrong answers lose a life!</li>' +
+                                    '<li>• Complete all tasks to escape the office</li>' +
+                                '</ul>' +
+                            '</div>' +
+                            '<button onclick="startGame()" class="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-4 rounded-lg text-xl font-semibold hover:from-purple-700 hover:to-pink-700 transform hover:scale-105 transition-all shadow-lg">' +
+                                'Start Your Escape! 🚀' +
+                            '</button>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+            } else if (gameState === 'won') {
+                app.innerHTML = '<div class="min-h-screen bg-gradient-to-br from-green-400 via-blue-500 to-purple-600 flex items-center justify-center p-4">' +
+                    '<div class="bg-white rounded-2xl shadow-2xl p-8 max-w-2xl w-full text-center">' +
+                        '<div class="text-6xl mb-4">🎉</div>' +
+                        '<h1 class="text-4xl font-bold text-gray-800 mb-4">You Escaped!</h1>' +
+                        '<p class="text-xl text-gray-600 mb-4">' +
+                            'Congratulations! You\'ve mastered the vocabulary and made it out!' +
+                        '</p>' +
+                        '<div class="bg-green-50 border-2 border-green-400 rounded-lg p-6 mb-6">' +
+                            '<p class="text-3xl font-bold text-green-700">Final Score: ' + score + ' points</p>' +
+                            '<p class="text-lg text-gray-600 mt-2">Items collected: ' + inventory.length + '</p>' +
+                        '</div>' +
+                        '<button onclick="startGame()" class="bg-gradient-to-r from-green-600 to-blue-600 text-white px-8 py-4 rounded-lg text-xl font-semibold hover:from-green-700 hover:to-blue-700 transform hover:scale-105 transition-all shadow-lg">' +
+                            'Play Again 🔄' +
+                        '</button>' +
+                    '</div>' +
+                '</div>';
+            } else if (gameState === 'lost') {
+                app.innerHTML = '<div class="min-h-screen bg-gradient-to-br from-red-900 via-gray-900 to-black flex items-center justify-center p-4">' +
+                    '<div class="bg-white rounded-2xl shadow-2xl p-8 max-w-2xl w-full text-center">' +
+                        '<div class="text-6xl mb-4">😔</div>' +
+                        '<h1 class="text-4xl font-bold text-gray-800 mb-4">Game Over</h1>' +
+                        '<p class="text-xl text-gray-600 mb-4">' +
+                            'You ran out of lives! Take a chill pill and try again!' +
+                        '</p>' +
+                        '<div class="bg-red-50 border-2 border-red-400 rounded-lg p-6 mb-6">' +
+                            '<p class="text-2xl font-bold text-red-700">Score: ' + score + ' points</p>' +
+                            '<p class="text-lg text-gray-600 mt-2">Keep practicing your vocabulary!</p>' +
+                        '</div>' +
+                        '<button onclick="startGame()" class="bg-gradient-to-r from-red-600 to-orange-600 text-white px-8 py-4 rounded-lg text-xl font-semibold hover:from-red-700 hover:to-orange-700 transform hover:scale-105 transition-all shadow-lg">' +
+                            'Try Again 🔄' +
+                        '</button>' +
+                    '</div>' +
+                '</div>';
+            } else if (gameState === 'playing') {
+                const scene = scenes[currentScene];
+                let tasksHTML = '';
+                
+                scene.tasks.forEach(function(task, taskIndex) {
+                    const isCompleted = inventory.includes(task.reward);
+                    
+                    let taskContent = '';
+                    if (!isCompleted) {
+                        if (task.type === 'choice') {
+                            taskContent = task.options.map(function(option, optIndex) {
+                                return '<button onclick="handleAnswer(' + taskIndex + ', ' + optIndex + ', ' + (optIndex === task.correct) + ')" ' +
+                                    'class="w-full text-left p-3 rounded-lg bg-white border-2 border-gray-300 hover:border-purple-500 hover:bg-purple-50 transition-all">' +
+                                    option +
+                                '</button>';
+                            }).join('');
+                        } else if (task.type === 'fill') {
+                            taskContent = '<div class="flex gap-2">' +
+                                '<input type="text" id="fill-' + taskIndex + '" placeholder="Type your answer..." ' +
+                                    'class="flex-1 p-3 border-2 border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none" ' +
+                                    'onkeypress="if(event.key===\'Enter\') submitFill(' + taskIndex + ')">' +
+                                '<button onclick="submitFill(' + taskIndex + ')" ' +
+                                    'class="px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 transition-all">' +
+                                    'Submit' +
+                                '</button>' +
+                            '</div>';
+                        }
+                    }
+                    
+                    tasksHTML += '<div class="border-2 rounded-lg p-5 ' + (isCompleted ? 'bg-green-50 border-green-400' : 'bg-gray-50 border-gray-300') + '">' +
+                        '<div class="flex justify-between items-start mb-3">' +
+                            '<h3 class="font-bold text-lg text-gray-800">Task ' + (taskIndex + 1) + '</h3>' +
+                            (isCompleted ? '<span class="text-green-600 text-2xl">✓</span>' : '') +
+                        '</div>' +
+                        '<p class="text-gray-700 mb-4">' + task.question + '</p>' +
+                        taskContent +
+                    '</div>';
+                });
+
+                const livesHTML = '❤️'.repeat(lives);
+                const feedbackHTML = feedback ? 
+                    '<div class="mb-6 p-4 rounded-lg ' + (feedback.startsWith('✅') ? 'bg-green-50 border-l-4 border-green-500' : 'bg-red-50 border-l-4 border-red-500') + '">' +
+                        '<p class="font-semibold">' + feedback + '</p>' +
+                    '</div>' : '';
+                
+                app.innerHTML = '<div class="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 p-4">' +
+                    '<div class="max-w-4xl mx-auto">' +
+                        '<div class="bg-white rounded-t-2xl shadow-lg p-4 flex justify-between items-center">' +
+                            '<div>' +
+                                '<span class="text-sm font-semibold text-gray-600">Scene ' + (currentScene + 1) + '/' + scenes.length + '</span>' +
+                                '<div class="flex gap-1 mt-1">' +
+                                    '<span class="text-red-500">' + livesHTML + '</span>' +
+                                '</div>' +
+                            '</div>' +
+                            '<div class="text-right">' +
+                                '<p class="text-2xl font-bold text-purple-600">' + score + ' pts</p>' +
+                                '<p class="text-xs text-gray-500">' + inventory.length + ' items</p>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="bg-white shadow-lg p-6">' +
+                            '<div class="text-center mb-6">' +
+                                '<div class="text-7xl mb-3">' + scene.image + '</div>' +
+                                '<h2 class="text-3xl font-bold text-gray-800 mb-2">' + scene.title + '</h2>' +
+                                '<p class="text-gray-600 text-lg">' + scene.description + '</p>' +
+                            '</div>' +
+                            feedbackHTML +
+                            '<div class="space-y-6">' +
+                                tasksHTML +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="bg-white rounded-b-2xl shadow-lg p-4">' +
+                            '<p class="text-center text-sm text-gray-600">' +
+                                '💡 Complete all tasks in this room to move forward!' +
+                            '</p>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+            }
+        }
+
+        function startGame() {
+            gameState = 'playing';
+            currentScene = 0;
+            inventory = [];
+            score = 0;
+            feedback = '';
+            lives = 3;
+            render();
+        }
+
+        function handleAnswer(taskIndex, answerIndex, isCorrect) {
+            const task = scenes[currentScene].tasks[taskIndex];
+            
+            if (isCorrect) {
+                score += 10;
+                feedback = '✅ Correct! ' + task.explanation;
+                inventory.push(task.reward);
+                
+                const sceneTaskRewards = scenes[currentScene].tasks.map(function(t) { return t.reward; });
+                const allTasksComplete = sceneTaskRewards.every(function(r) { return inventory.includes(r); });
+                
+                if (allTasksComplete) {
+                    setTimeout(function() {
+                        if (currentScene < scenes.length - 1) {
+                            currentScene++;
+                            feedback = '';
+                            render();
+                        } else {
+                            gameState = 'won';
+                            render();
+                        }
+                    }, 2000);
+                }
+            } else {
+                lives--;
+                feedback = '❌ Not quite! ' + task.explanation;
+                
+                if (lives <= 0) {
+                    gameState = 'lost';
+                    setTimeout(function() { render(); }, 1500);
+                }
+            }
+            
+            render();
+        }
+
+        function submitFill(taskIndex) {
+            const input = document.getElementById('fill-' + taskIndex);
+            const userAnswer = input.value.toLowerCase().trim();
+            const task = scenes[currentScene].tasks[taskIndex];
+            
+            const isCorrect = userAnswer === task.answer.toLowerCase() || 
+                             (task.alternatives && task.alternatives.some(function(alt) { return alt.toLowerCase() === userAnswer; }));
+            
+            handleAnswer(taskIndex, userAnswer, isCorrect);
+        }
+
+        render();
+    </script>
+</body>
+</html>
